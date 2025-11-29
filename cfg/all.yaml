@@ -1,0 +1,44 @@
+# YOLO11 object detection model with GhostHGNetV2 backbone, DCNV4 convolution, and Dynamic Convolution
+
+# Parameters
+nc: 5  # number of classes
+scales:
+  n: [0.50, 0.25, 1024]  # model scaling for different sizes
+  s: [0.50, 0.50, 1024]
+  m: [0.50, 1.00, 512]
+  l: [1.00, 1.00, 512]
+  x: [1.00, 1.50, 512]
+
+# YOLO11n backbone with GhostHGNetV2, DCNV4, and Dynamic Convolution
+backbone:
+  - [-1, 1, HGStem, [32, 48]]  # Stage 1
+  - [-1, 6, Ghost_HGBlock, [48, 128, 3]]  # Stage 2
+  - [-1, 1, DWConv, [128, 3, 2, 1, False]]  # Stage 3
+  - [-1, 6, Ghost_HGBlock, [96, 512, 3]]  # Stage 4
+  - [-1, 1, DWConv, [512, 3, 2, 1, False]]  # Stage 5
+  - [-1, 6, Ghost_HGBlock, [192, 1024, 5, True, False]]  # Stage 6
+  - [-1, 1, DWConv, [1024, 3, 2, 1, False]]  # Stage 7
+  - [-1, 6, Ghost_HGBlock, [384, 2048, 5, True, False]]  # Stage 8
+  - [-1, 1, SPPF, [1024, 5]]  # Stage 9
+
+  # Add Dynamic Convolution in the backbone
+  - [-1, 2, C3k2_DynamicConv, [512, True]]  # Stage 10
+
+head:
+  - [-1, 1, nn.Upsample, [None, 2, "nearest"]]
+  - [[-1, 7], 1, Concat, [1]]
+  - [-1, 2, C3k2_DynamicConv, [512, False]]  # Stage 11
+
+  - [-1, 1, nn.Upsample, [None, 2, "nearest"]]
+  - [[-1, 3], 1, Concat, [1]]
+  - [-1, 2, C3k2_DynamicConv, [256, False]]  # Stage 12
+
+  - [-1, 1, Conv, [256, 3, 2]]
+  - [[-1, 14], 1, Concat, [1]]
+  - [-1, 2, C3k2_DynamicConv, [512, False]]  # Stage 13
+
+  - [-1, 1, Conv, [512, 3, 2]]
+  - [[-1, 11], 1, Concat, [1]]
+  - [-1, 2, C3k2_DynamicConv, [1024, True]]  # Stage 14
+
+  - [[17, 20, 23], 1, Detect, [nc]]  # Final detection
