@@ -3,7 +3,7 @@ warnings.filterwarnings('ignore')
 from ultralytics import YOLO
 
 if __name__ == '__main__':
-    model = YOLO('cfg/yolo11-C3k2-DCNV4.yaml')
+    model = YOLO('cfg/yolo11-GhostHGNetV2.yaml')
     model.load('yolo11n.pt') # loading pretrain weights
     model.train(data='datasets/hit-uav/dataset.yaml',
                 cache=False,
@@ -16,7 +16,7 @@ if __name__ == '__main__':
                 optimizer='SGD', # using SGD
                 # patience=0, # set 0 to close earlystop.
                 # resume=True, # 断点续训,YOLO初始化时选择last.pt,不懂就在百度云.txt找断点续训的视频
-                # amp=False, # close amp | loss出现nan可以关闭amp
+                amp=False, # close amp | loss出现nan可以关闭amp
                 # fraction=0.2,
                 project='runs/train',
                 name='DCNV4',
