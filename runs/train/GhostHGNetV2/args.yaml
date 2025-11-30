@@ -13,7 +13,7 @@ cache: false
 device: null
 workers: 4
 project: runs/train
-name: DCNV42
+name: GhostHGNetV2
 exist_ok: false
 pretrained: yolo11n.pt
 optimizer: SGD
