@@ -3,7 +3,7 @@ warnings.filterwarnings('ignore')
 from ultralytics import YOLO
 
 if __name__ == '__main__':
-    model = YOLO('cfg/yolo11-C3k2-DCNV4.yaml')
+    model = YOLO('cfg/yolo11-GhostHGNetV2.yaml')
     # model.load('yolo11n.pt') # loading pretrain weights
     model.train(data='datasets/hit-uav/dataset.yaml',
                 cache=False,
@@ -19,5 +19,5 @@ if __name__ == '__main__':
                 # amp=False, # close amp | loss出现nan可以关闭amp
                 # fraction=0.2,
                 project='runs/train',
-                name='DCNV4-fix',
+                name='GhostHGNetV2-fix',
                 )
