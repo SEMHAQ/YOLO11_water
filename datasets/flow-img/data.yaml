@@ -1,13 +1,8 @@
-train: ../train/images
-val: ../valid/images
-test: ../test/images
+path: E:\Project\YOLO11_lightweight\datasets\flow-img
+train: train/images
+val: valid/images
+test: test/images
 
 nc: 1
 names: ['bottle']
 
-roboflow:
-  workspace: school-u6du1
-  project: flow-9dt9s
-  version: 5
-  license: CC BY 4.0
-  url: https://universe.roboflow.com/school-u6du1/flow-9dt9s/dataset/5
